@@ -1,0 +1,10 @@
+                               ━━━━━━━━━
+                                  LYRA
+
+                                Andinus
+                               ━━━━━━━━━
+
+
+Lyra is a simple cli program to manage fortune files. I wrote this for
+my quotes file. Previously I used a simple `sh(1)' function to append
+quotes & `more(1)' to read them, Lyra will replace both.
