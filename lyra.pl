@@ -49,7 +49,8 @@ sub random {
     say $fortunes[ rand @fortunes ]; # Print random fortune.
 }
 
-if ( $dispatch{ $ARGV[0] } ) {
+if ( $ARGV[0]
+         and $dispatch{ $ARGV[0] } ) {
     $dispatch{ $ARGV[0] }->();
 } elsif ( scalar @ARGV == 0 ) {
     HelpMessage();
