@@ -63,12 +63,9 @@ if ( $ARGV[0] ) {
         random($fortune_file); }
     elsif ( $ARGV[0] eq "latest") { get_latest(); }
     elsif ( $ARGV[0] eq "mirror") { get_mirror(); }
-    elsif ( $ARGV[0] eq "ls") { run3[ "ls", $fortune_dir] }
-} elsif ( scalar @ARGV == 0 ) {
-    say "Usage: lyra <fortune>";
-} else {
-    say "lyra: no such fortune";
-}
+    elsif ( $ARGV[0] eq "ls") { run3[ "ls", $fortune_dir]; }
+    else { say "lyra: no such fortune"; }
+} else { say "Usage: lyra <fortune>"; }
 
 sub random {
     my $fortune_file = shift @_;
