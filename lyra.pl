@@ -55,6 +55,11 @@ my %fortunes = (
         => "http://katspace.com/fandom/quotes/book",
     "katspace_quotes"
         => "http://katspace.com/fandom/quotes/quotes",
+
+    # levonk quotes (had starred kirch's fortunes repo, checked
+    # profile & found this).
+    "levon"
+        => "https://raw.githubusercontent.com/levonk/fortune/master/levonkquotes",
 );
 
 if ( $ARGV[0] ) {
