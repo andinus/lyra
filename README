@@ -5,6 +5,25 @@
                                ━━━━━━━━━
 
 
-Lyra is a simple cli program to manage fortune files. I wrote this for
-my quotes file. Previously I used a simple `sh(1)' function to append
-quotes & `more(1)' to read them, Lyra will replace both.
+Lyra is a simple cli program to manage fortune files. It can read
+directly from plain-text files, creating datafiles through `strfile' is
+not required.
+
+This also means that it has less features compared to fortune(6).
+Default directory is assumed to be `$HOME/fortunes'.
+
+This program is not useful if you have `strfile' installed, just use it
+& place the datafiles in fortune directory.
+
+
+1 Usage
+═══════
+
+  You have to run `lyra mirror' once before using it, it'll mirror all
+  the fortune files in `%fortune'.
+  ┌────
+  │ lyra mst # Print a random fortune from mst fortunes.
+  │ lyra mirror # Mirror fortune files.
+  │ lyra latest # Get latest fortune files.
+  │ lyra ls # List all fortune files.
+  └────
