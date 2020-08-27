@@ -63,11 +63,11 @@ my %fortunes = (
 );
 
 if ( $ARGV[0] ) {
-    if ($fortunes{ $ARGV[0] }) {
+    if ($fortunes{ $ARGV[0] } or -e "$fortune_dir/$ARGV[0]") {
         my $fortune_file = "$fortune_dir/$ARGV[0]";
         random($fortune_file); }
-    elsif ( $ARGV[0] eq "latest") { get_latest(); }
-    elsif ( $ARGV[0] eq "mirror") { get_mirror(); }
+    elsif ( $ARGV[0] eq "latest") { get_kirch(); get_latest(); }
+    elsif ( $ARGV[0] eq "mirror") { get_kirch(); get_mirror(); }
     elsif ( $ARGV[0] eq "ls") { run3[ "ls", $fortune_dir]; }
     else { say "lyra: no such fortune"; }
 } else { say "Usage: lyra <fortune>"; }
@@ -79,9 +79,29 @@ sub random {
     say $fortunes[ rand @fortunes ]; # Print random fortune.
 }
 
+sub get_kirch {
+    path("/tmp")->mkpath;
+
+    run3 [qw(git -C /tmp clone https://github.com/JKirchartz/fortunes.git kirch)];
+    $? # We assume non-zero is an error.
+        ? warn "[WARN] Cannot get kirch fortunes :: $?\n"
+        : say "Cloned kirch fortunes to /tmp/kirch";
+
+    foreach my $file (qw( README.md LICENSE Makefile )) {
+        my $file_t = "/tmp/kirch/$file";
+        unlink $file_t and say "$file_t deleted."
+            or warn "[WARN] Could not delete $file_t: $!\n";
+    }
+    system("rm -r /tmp/kirch/bin");
+    system("cp -r /tmp/kirch/* /home/andinus/fortunes/");
+}
+
 sub get_latest {
     foreach my $fortune (sort keys %fortunes) {
         ftp("$fortune_dir/$fortune", $fortunes{$fortune});
+            $? # We assume non-zero is an error.
+        ? warn "[WARN] Failed to get $fortune :: $?\n"
+        : say "got $fortune";
     }
 }
 
