@@ -2,29 +2,44 @@
 
 use strict;
 use warnings;
-use feature 'say';
 
 use Path::Tiny;
-use IPC::Run3;
 
-my $fortune_dir = "$ENV{HOME}/fortunes";
+my @fortunes;
+my @fortune_paths = ("$ENV{HOME}/fortunes/", "/usr/share/games/fortune/");
 
-if ( $ARGV[0] ) {
-    if (-e "$fortune_dir/$ARGV[0]") {
-        my $fortune_file = "$fortune_dir/$ARGV[0]";
-        random($fortune_file);
-    } elsif ( $ARGV[0] eq "ls") {
-        run3[ "ls", $fortune_dir];
-    } else {
-        say "lyra: no such fortune";
+if (scalar @ARGV) {
+    foreach my $arg (@ARGV) {
+        foreach (@fortune_paths) {
+            my $path = path($_);
+            if (-e "$path/$arg") {
+                my $fortune_file = "$path/$arg";
+                read_fortunes("$path/$arg")
+            }
+        }
     }
 } else {
-    say "Usage: lyra <fortune>";
+    foreach (@fortune_paths) {
+        my $path = path($_);
+        if (-d $path) {
+            for ($path->children) {
+                read_fortunes($_) unless $_ =~ /\.dat$/i;
+            }
+        } else {
+            read_fortunes($path);
+        }
+    }
 }
 
-sub random {
-    my $fortune_file = shift @_;
-    my $file = path($fortune_file)->absolute;
-    my @fortunes = split/\n%\n/, $file->slurp;
-    say $fortunes[ rand @fortunes ]; # Print random fortune.
+
+if (scalar @fortunes > 0) {
+    print $fortunes[ rand @fortunes ], "\n" ;
+} else {
+    print "lyra: no such fortune.\n";
+}
+
+sub read_fortunes {
+    my $path = shift @_;
+    my $file = path($path)->absolute;
+    push @fortunes, split(/\n%\n/, $file->slurp);
 }

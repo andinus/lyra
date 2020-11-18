@@ -14,15 +14,3 @@ Default directory is assumed to be `$HOME/fortunes'.
 
 This program is not useful if you have `strfile' installed, just use it
 & place the datafiles in fortune directory.
-
-
-1 Usage
-═══════
-
-  Get the fortunes by executing `fortunes.pl' & `kirch.sh' from scripts
-  directory. Read the source before running them, it's short.
-
-  ┌────
-  │ lyra mst # Print a random fortune from mst fortunes.
-  │ lyra ls # List all fortune files.
-  └────
